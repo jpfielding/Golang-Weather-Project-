@@ -56,7 +56,12 @@ func main() {
 	}
 	var b bytes.Buffer
 	io.Copy(&b, resp.Body)
+	// search for snow
 	if strings.Contains(b.String(), "snow") {
 		fmt.Println("Snow bitches!")
+	}
+	// search for ice
+	if strings.Contains(b.String(), "ice") {
+		fmt.Println("Ice bitches!")
 	}
 }
