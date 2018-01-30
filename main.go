@@ -51,8 +51,13 @@ func main() {
 	url := fmt.Sprintf("http://samples.openweathermap.org/data/2.5/forecast?q=%s&mode=xml&appid=%s", *city, appID)
 	fmt.Println(url)
 	resp, err := http.Get(url)
+	// couldnt talk to server
 	if err != nil {
 		panic(err)
+	}
+	// talked to server, didnt go well
+	if resp.StatusCode >= 300 {
+		panic(fmt.Errorf(resp.Status))
 	}
 	var b bytes.Buffer
 	io.Copy(&b, resp.Body)
