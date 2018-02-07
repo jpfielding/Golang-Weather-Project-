@@ -17,7 +17,8 @@ func main() {
 
 	flag.Parse()
 
-	appID := "b6907d289e10d714a6e88b30761fae22"
+	appID := "b6907d289e10d714a6e88b30761fae22" //sample id
+	// appID := "246e1d08a3b875f4a75b7ca1b79fc7fe" // live key
 	url := fmt.Sprintf("http://samples.openweathermap.org/data/2.5/forecast?q=%s&mode=xml&appid=%s", *city, appID)
 	fmt.Println(url)
 	resp, err := http.Get(url)
@@ -62,7 +63,6 @@ type Weather struct {
 	XMLName  xml.Name `xml:"weatherdata"`
 	Location Location `xml:"location"`
 	Forecast Forecast `xml:"forecast"`
-	Sun      Sun      `xml:"sun"`
 }
 
 type Location struct {
@@ -72,11 +72,6 @@ type Location struct {
 
 type Forecast struct {
 	Time []Timeslot `xml:"time"`
-}
-
-type Sun struct {
-	Rise string `xml:"rise,attr"`
-	Set  string `xml:"set,attr"`
 }
 
 type Timeslot struct {
