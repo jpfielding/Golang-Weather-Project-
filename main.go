@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/xml"
 	"flag"
 	"fmt"
 	"io"
@@ -9,41 +10,10 @@ import (
 	"strings"
 )
 
-// https://tour.golang.org
-/*func main() {
-	filename := flag.String("file", "web.html", "The file to writ to")
-
-	flag.Parse()
-
-	resp, err := http.Get("http://samples.openweathermap.org")
-	if err != nil {
-		panic(err)
-	}
-	defer resp.Body.Close()
-	// read from example.com, write to command line
-	f, _ := os.Create(*filename)
-	io.Copy(f, resp.Body)
-	fmt.Printf("saved file %s\n", *filename)
-}
-
-func printStuff() {
-	f, err := os.Create("hello.txt")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-
-	for i := 0; i < 10; i++ {
-		// to the file
-		fmt.Fprintf(f, "Hello, playground %d\n", i)
-		// writing to the terminal
-		fmt.Fprintf(os.Stdout, "Hello, playground %d\n", i)
-		fmt.Fprintf(os.Stderr, "Hello, playground %d\n", i)
-	}
-} */
-
 func main() {
 	city := flag.String("city", "Pittsburgh", "Default city")
+	verbose := flag.Bool("v", false, "lots of info")
+	rawVerbose := flag.Bool("rv", false, "lots and lots of info")
 
 	flag.Parse()
 
@@ -59,14 +29,71 @@ func main() {
 	if resp.StatusCode >= 300 {
 		panic(fmt.Errorf(resp.Status))
 	}
-	var b bytes.Buffer
+	b := bytes.Buffer{}
 	io.Copy(&b, resp.Body)
-	// search for snow
-	if strings.Contains(b.String(), "snow") {
-		fmt.Println("Snow bitches!")
+	// get loud
+	if *rawVerbose {
+		fmt.Println(b.String())
 	}
-	// search for ice
-	if strings.Contains(b.String(), "ice") {
-		fmt.Println("Ice bitches!")
+	w := Weather{}
+	err = xml.Unmarshal(b.Bytes(), &w)
+	if err != nil {
+		panic(err)
 	}
+	fmt.Printf("location:%s, %s\n", w.Location.Name, w.Location.Country)
+	if *verbose {
+		fmt.Printf("%v", w)
+	}
+
+	for _, t := range w.Forecast.Time {
+		// search for snow
+		if strings.Contains(t.Precip.Type, "snow") {
+			fmt.Printf("%v - %v Snow on the way!\n", t.From, t.To)
+		}
+		// search for ice
+		if strings.Contains(t.Precip.Type, "ice") {
+			fmt.Printf("%v - %v Ice incoming\n", t.From, t.To)
+		}
+
+	}
+}
+
+type Weather struct {
+	XMLName  xml.Name `xml:"weatherdata"`
+	Location Location `xml:"location"`
+	Forecast Forecast `xml:"forecast"`
+	Sun      Sun      `xml:"sun"`
+}
+
+type Location struct {
+	Name    string `xml:"name"`
+	Country string `xml:"country"`
+}
+
+type Forecast struct {
+	Time []Timeslot `xml:"time"`
+}
+
+type Sun struct {
+	Rise string `xml:"rise,attr"`
+	Set  string `xml:"set,attr"`
+}
+
+type Timeslot struct {
+	From   string `xml:"from,attr"`
+	To     string `xml:"to,attr"`
+	Symbol Symbol `xml:"symbol"`
+	Precip Precip `xml:"precipitation"`
+}
+
+type Symbol struct {
+	Number string `xml:"number,attr"`
+	Name   string `xml:"name,attr"`
+	Var    string `xml:"var,attr"`
+}
+
+type Precip struct {
+	Unit  string `xml:"unit,attr"`
+	Value string `xml:"value,attr"`
+	Type  string `xml:"type,attr"`
 }
