@@ -14,12 +14,20 @@ func main() {
 	city := flag.String("city", "Pittsburgh", "Default city")
 	verbose := flag.Bool("v", false, "lots of info")
 	rawVerbose := flag.Bool("rv", false, "lots and lots of info")
+	live := flag.Bool("live", false, "whether or not to use live server")
 
 	flag.Parse()
 
-	appID := "b6907d289e10d714a6e88b30761fae22" //sample id
-	// appID := "246e1d08a3b875f4a75b7ca1b79fc7fe" // live key
-	url := fmt.Sprintf("http://samples.openweathermap.org/data/2.5/forecast?q=%s&mode=xml&appid=%s", *city, appID)
+	//sample appID by default
+	appID := "b6907d289e10d714a6e88b30761fae22"
+	//sample server by default
+	server := "samples.openweathermap.org"
+	//if live is overridden
+	if *live {
+		server = "api.openweathermap.org"
+		appID = "246e1d08a3b875f4a75b7ca1b79fc7fe"
+	}
+	url := fmt.Sprintf("http://%s/data/2.5/forecast?q=%s&mode=xml&appid=%s", server, *city, appID)
 	fmt.Println(url)
 	resp, err := http.Get(url)
 	// couldnt talk to server
