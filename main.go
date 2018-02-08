@@ -1,5 +1,6 @@
-package main
+package main //how every Go program begins
 
+//imports all the functions going to be used in the code
 import (
 	"bytes"
 	"encoding/xml"
@@ -55,11 +56,11 @@ func main() {
 	}
 
 	for _, t := range w.Forecast.Time {
-		// search for snow
+		// searches for the word "snow" in weathermap.org
 		if strings.Contains(t.Precip.Type, "snow") {
 			fmt.Printf("%v - %v Snow on the way!\n", t.From, t.To)
 		}
-		// search for ice
+		// searches for the word "ice" in weathermap.org
 		if strings.Contains(t.Precip.Type, "ice") {
 			fmt.Printf("%v - %v Ice incoming\n", t.From, t.To)
 		}
