@@ -57,13 +57,14 @@ func main() {
 
 	for _, t := range w.Forecast.Time {
 		// searches for the word "snow" in weathermap.org
-		if strings.Contains(t.Precip.Type, "snow") {
+		if strings.Contains(t.Precipitation.Type, "snow") {
 			fmt.Printf("%v - %v Snow on the way!\n", t.From, t.To)
 		}
 		// searches for the word "ice" in weathermap.org
-		if strings.Contains(t.Precip.Type, "ice") {
+		if strings.Contains(t.Precipitation.Type, "ice") {
 			fmt.Printf("%v - %v Ice incoming\n", t.From, t.To)
 		}
+		if string.Contains(t.Temperature.Type, "
 
 	}
 }
