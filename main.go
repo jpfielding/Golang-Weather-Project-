@@ -96,8 +96,15 @@ type Symbol struct {
 	Var    string `xml:"var,attr"`
 }
 
-type Precip struct {
+type Precipitation struct {
 	Unit  string `xml:"unit,attr"`
 	Value string `xml:"value,attr"`
 	Type  string `xml:"type,attr"`
+}
+
+type Temperature struct {
+	Unit  string `xml:"unit, attr"`
+	Value string `xml:"value, attr"`
+	Min  string `xml:"min, attr"`
+	Max  string `xml:"max, attr"`
 }
