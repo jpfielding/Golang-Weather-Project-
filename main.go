@@ -64,9 +64,6 @@ func main() {
 		if strings.Contains(t.Precipitation.Type, "ice") {
 			fmt.Printf("%v - %v Ice incoming\n", t.From, t.To)
 		}
-		if string.Contains(t.Temperature.Type,
-
-	}
 }
 
 type Weather struct {
