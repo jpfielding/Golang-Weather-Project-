@@ -74,11 +74,11 @@ func main() {
 			fmt.Println("%v - %v It'll be cold today!\n", t.From, t.To)
 		}
 		//searches for temperatures above 40 degrees and below 70 degrees Fahrenheit
-		if else strings.Contains(F >= 40.01 && <= 70.00) {
+		if strings.Contains(F >= 40.01 && <= 70.00) {
 			fmt.Println("%v - %v It'll be warm today!\n", t.From, t.To)
 		}
 		//searches for temperatures greater than 70 degrees
-		if else strings.Contains(F >= 70.01) {
+		if strings.Contains(F >= 70.01) {
 			fmt.Println("%v- %v It'll be hot today!\n", t.From, t.To)
 		}
 }
