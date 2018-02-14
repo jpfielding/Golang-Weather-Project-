@@ -56,6 +56,7 @@ func main() {
 	}
 
 	for _, t := range w.Forecast.Time {
+		F:= 9/5(t.Temperature.Value -273) +32 
 		// searches for the word "snow" in weathermap.org
 		if strings.Contains(t.Precipitation.Type, "snow") {
 			fmt.Printf("%v - %v Snow on the way!\n", t.From, t.To)
@@ -64,16 +65,16 @@ func main() {
 		if strings.Contains(t.Precipitation.Type, "ice") {
 			fmt.Printf("%v - %v Ice incoming\n", t.From, t.To)
 		}
-		if strings.Contains(t.Temperature.Value <= 273.15) {
+		if strings.Contains(F <= 32.00) {
 			fmt.Println("%v - %v It'll be below freezing!\n", t.From, t.To)
 		}
-		if else strings.Contains(t.Temperature.Value >= 273.15 && <= 277.59) {
+		if else strings.Contains(F >= 32.01 && <= 40.00) {
 			fmt.Println("%v - %v It'll be cold today!\n", t.From, t.To)
 		}
-		if else strings.Contains(t.Temperature.Value >= 277.59 && <= 291.48) {
+		if else strings.Contains(F >= 40.01 && <= 70.00) {
 			fmt.Println("%v - %v It'll be warm today!\n", t.From, t.To)
 		}
-		if else strings.Contains(t.Temperature.Value >= 291.48) {
+		if else strings.Contains(F >= 70.01) {
 			fmt.Println("%v- %v It'll be hot today!\n", t.From, t.To)
 		}
 }
