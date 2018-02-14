@@ -65,15 +65,19 @@ func main() {
 		if strings.Contains(t.Precipitation.Type, "ice") {
 			fmt.Printf("%v - %v Ice incoming\n", t.From, t.To)
 		}
+		//searches for temperature 32 degrees Fahrenheit and under
 		if strings.Contains(F <= 32.00) {
 			fmt.Println("%v - %v It'll be below freezing!\n", t.From, t.To)
 		}
+		//searches for temperatures above 32 degrees and below 40 degrees Fahrenheit
 		if else strings.Contains(F >= 32.01 && <= 40.00) {
 			fmt.Println("%v - %v It'll be cold today!\n", t.From, t.To)
 		}
+		//searches for temperatures above 40 degrees and below 70 degrees Fahrenheit
 		if else strings.Contains(F >= 40.01 && <= 70.00) {
 			fmt.Println("%v - %v It'll be warm today!\n", t.From, t.To)
 		}
+		//searches for temperatures greater than 70 degrees
 		if else strings.Contains(F >= 70.01) {
 			fmt.Println("%v- %v It'll be hot today!\n", t.From, t.To)
 		}
