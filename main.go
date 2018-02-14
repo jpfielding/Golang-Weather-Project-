@@ -64,6 +64,18 @@ func main() {
 		if strings.Contains(t.Precipitation.Type, "ice") {
 			fmt.Printf("%v - %v Ice incoming\n", t.From, t.To)
 		}
+		if strings.Contains(t.Temperature.Value <= 273.15) {
+			fmt.Println("%v - %v It'll be below freezing!\n", t.From, t.To)
+		}
+		if else strings.Contains(t.Temperature.Value >= 273.15 && <= 277.59) {
+			fmt.Println("%v - %v It'll be cold today!\n", t.From, t.To)
+		}
+		if else strings.Contains(t.Temperature.Value >= 277.59 && <= 291.48) {
+			fmt.Println("%v - %v It'll be warm today!\n", t.From, t.To)
+		}
+		if else strings.Contains(t.Temperature.Value >= 291.48) {
+			fmt.Println("%v- %v It'll be hot today!\n", t.From, t.To)
+		}
 }
 
 type Weather struct {
@@ -85,7 +97,8 @@ type Timeslot struct {
 	From   string `xml:"from,attr"`
 	To     string `xml:"to,attr"`
 	Symbol Symbol `xml:"symbol"`
-	Precip Precip `xml:"precipitation"`
+	Precipitation Precipitation `xml:"precipitation"`
+	Temp Temp `xml:"temperature"`
 }
 
 type Symbol struct {
