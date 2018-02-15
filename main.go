@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -56,7 +57,6 @@ func main() {
 	}
 
 	for _, t := range w.Forecast.Time {
-		F:= 9/5(t.Temperature.Value -273) +32 
 		// searches for the word "snow" in weathermap.org
 		if strings.Contains(t.Precipitation.Type, "snow") {
 			fmt.Printf("%v - %v Snow on the way!\n", t.From, t.To)
@@ -65,22 +65,25 @@ func main() {
 		if strings.Contains(t.Precipitation.Type, "ice") {
 			fmt.Printf("%v - %v Ice incoming\n", t.From, t.To)
 		}
+		k, _ := strconv.ParseFloat(t.Temp.Value, 64)
+		f := ((9 / 5) * (k - 273)) + 32
 		//searches for temperature 32 degrees Fahrenheit and under
-		if strings.Contains(F <= 32.00) {
-			fmt.Println("%v - %v It'll be below freezing!\n", t.From, t.To)
+		if f <= 32 {
+			fmt.Printf("%v - %v %d It'll be below freezing!\n", t.From, t.To, int(f))
 		}
 		//searches for temperatures above 32 degrees and below 40 degrees Fahrenheit
-		if else strings.Contains(F >= 32.01 && <= 40.00) {
-			fmt.Println("%v - %v It'll be cold today!\n", t.From, t.To)
+		if f > 32 && f <= 40 {
+			fmt.Printf("%v - %v %d It'll be cold today!\n", t.From, t.To, int(f))
 		}
 		//searches for temperatures above 40 degrees and below 70 degrees Fahrenheit
-		if strings.Contains(F >= 40.01 && <= 70.00) {
-			fmt.Println("%v - %v It'll be warm today!\n", t.From, t.To)
+		if f > 40 && f <= 70 {
+			fmt.Printf("%v - %v %d It'll be warm today!\n", t.From, t.To, int(f))
 		}
 		//searches for temperatures greater than 70 degrees
-		if strings.Contains(F >= 70.01) {
-			fmt.Println("%v- %v It'll be hot today!\n", t.From, t.To)
+		if f >= 70.01 {
+			fmt.Printf("%v- %v %d It'll be hot today!\n", t.From, t.To, int(f))
 		}
+	}
 }
 
 type Weather struct {
@@ -99,11 +102,11 @@ type Forecast struct {
 }
 
 type Timeslot struct {
-	From   string `xml:"from,attr"`
-	To     string `xml:"to,attr"`
-	Symbol Symbol `xml:"symbol"`
+	From          string        `xml:"from,attr"`
+	To            string        `xml:"to,attr"`
+	Symbol        Symbol        `xml:"symbol"`
 	Precipitation Precipitation `xml:"precipitation"`
-	Temp Temp `xml:"temperature"`
+	Temp          Temp          `xml:"temperature"`
 }
 
 type Symbol struct {
@@ -118,9 +121,9 @@ type Precipitation struct {
 	Type  string `xml:"type,attr"`
 }
 
-type Temperature struct {
-	Unit  string `xml:"unit, attr"`
-	Value string `xml:"value, attr"`
-	Min  string `xml:"min, attr"`
-	Max  string `xml:"max, attr"`
+type Temp struct {
+	Unit  string `xml:"unit,attr"`
+	Value string `xml:"value,attr"`
+	Min   string `xml:"min,attr"`
+	Max   string `xml:"max,attr"`
 }
