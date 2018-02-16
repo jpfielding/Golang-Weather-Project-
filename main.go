@@ -1,4 +1,4 @@
-package main //how every Go program begins
+package main //how basic Go program begins
 
 //imports all the functions going to be used in the code
 import (
@@ -65,6 +65,7 @@ func main() {
 		if strings.Contains(t.Precipitation.Type, "ice") {
 			fmt.Printf("%v - %v Ice incoming\n", t.From, t.To)
 		}
+		//converts t.Temp.Value which is a string into a integer (float64)
 		k, _ := strconv.ParseFloat(t.Temp.Value, 64)
 		//formula for converting Kelvin from openweathermap.org to Fahrenheit
 		f := ((9 / 5) * (k - 273)) + 32 
