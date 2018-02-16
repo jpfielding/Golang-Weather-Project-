@@ -57,7 +57,7 @@ func main() {
 	}
 
 	for _, t := range w.Forecast.Time {
-		// searches for the word "sf <= 32now" in weathermap.org
+		// searches for the word "snow" in weathermap.org
 		if strings.Contains(t.Precipitation.Type, "snow") {
 			fmt.Printf("%v - %v Snow on the way!\n", t.From, t.To)
 		}
@@ -66,7 +66,8 @@ func main() {
 			fmt.Printf("%v - %v Ice incoming\n", t.From, t.To)
 		}
 		k, _ := strconv.ParseFloat(t.Temp.Value, 64)
-		f := ((9 / 5) * (k - 273)) + 32
+		//formula for converting Kelvin from openweathermap.org to Fahrenheit
+		f := ((9 / 5) * (k - 273)) + 32 
 		//searches for temperature 32 degrees Fahrenheit and under
 		if f <= 32 {
 			fmt.Printf("%v - %v %d It'll be below freezing!\n", t.From, t.To, int(f))
