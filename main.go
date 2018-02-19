@@ -24,13 +24,14 @@ func main() {
 	appID := "b6907d289e10d714a6e88b30761fae22"
 	//sample server by default
 	server := "samples.openweathermap.org"
-	//if live is overridden
+	//if live overrides sample 
 	if *live {
 		server = "api.openweathermap.org"
 		appID = "246e1d08a3b875f4a75b7ca1b79fc7fe"
 	}
 	url := fmt.Sprintf("http://%s/data/2.5/forecast?q=%s&mode=xml&appid=%s", server, *city, appID)
 	fmt.Println(url)
+	//creates an http Client that eventually pulls in the data from openweathermap.org
 	resp, err := http.Get(url)
 	// couldnt talk to server
 	if err != nil {
@@ -47,6 +48,7 @@ func main() {
 		fmt.Println(b.String())
 	}
 	w := Weather{}
+	//parses the xml data 
 	err = xml.Unmarshal(b.Bytes(), &w)
 	if err != nil {
 		panic(err)
@@ -55,7 +57,7 @@ func main() {
 	if *verbose {
 		fmt.Printf("%v", w)
 	}
-
+	//searches for different precipitation and ranges of temperature 
 	for _, t := range w.Forecast.Time {
 		// searches for the word "snow" in weathermap.org
 		if strings.Contains(t.Precipitation.Type, "snow") {
