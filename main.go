@@ -87,11 +87,11 @@ func main() {
 		}
 		//searches for temperatures above 40 degrees and below 70 degrees Fahrenheit
 		if f > 40 && f <= 70 {
-			fmt.Printf("%v - %v %d It'll be warm today!\n", t.From, t.To, int(f))
+			fmt.Printf("%s - %s %d It'll be warm today!\n", t.From, t.To, int(f))
 		}
 		//searches for temperatures greater than 70 degrees
 		if f > 70 {
-			fmt.Printf("%v- %v %d It'll be hot today!\n", t.From, t.To, int(f))
+			fmt.Printf("%s- %s %d It'll be hot today!\n", t.From, t.To, int(f))
 		}
 	}
 }
