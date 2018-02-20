@@ -14,10 +14,12 @@ import (
 
 func main() {
 	city := flag.String("city", "Pittsburgh", "Default city")
+	//verbose gives enough detail to debug the program
 	verbose := flag.Bool("v", false, "lots of info")
+	//rawverbose gives all the details to debug the program
 	rawVerbose := flag.Bool("rv", false, "lots and lots of info")
 	live := flag.Bool("live", false, "whether or not to use live server")
-
+	//applies the flags to find above to parsing command line parameters 
 	flag.Parse()
 
 	//sample appID by default
@@ -92,7 +94,8 @@ func main() {
 		}
 	}
 }
-
+//http://samples.openweathermap.org/data/2.5/forecast?q=London,us&mode=xml&appid=b6907d289e10d714a6e88b30761fae22 
+//telling unmarshal how to map the data structure above
 type Weather struct {
 	XMLName  xml.Name `xml:"weatherdata"`
 	Location Location `xml:"location"`
