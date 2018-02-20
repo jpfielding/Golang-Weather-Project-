@@ -48,7 +48,7 @@ func main() {
 	b := bytes.Buffer{}
 	//stores the data stream from the http server and stores it in b which is a buffer (array)
 	io.Copy(&b, resp.Body)
-	// get loud
+	// spits out the rawest form of the data that can be found
 	if *rawVerbose {
 		fmt.Println(b.String())
 	}
