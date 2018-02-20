@@ -24,14 +24,15 @@ func main() {
 	appID := "b6907d289e10d714a6e88b30761fae22"
 	//sample server by default
 	server := "samples.openweathermap.org"
-	//if live overrides sample 
+	//if live is turned on
 	if *live {
 		server = "api.openweathermap.org"
 		appID = "246e1d08a3b875f4a75b7ca1b79fc7fe"
 	}
+	//%s is a placeholder value and the real values are displayed in order after the url
 	url := fmt.Sprintf("http://%s/data/2.5/forecast?q=%s&mode=xml&appid=%s", server, *city, appID)
 	fmt.Println(url)
-	//creates an http Client that eventually pulls in the data from openweathermap.org
+	//creates an http Client which sends a request to the web server then the server sends a response back 
 	resp, err := http.Get(url)
 	// couldnt talk to server
 	if err != nil {
@@ -42,30 +43,32 @@ func main() {
 		panic(fmt.Errorf(resp.Status))
 	}
 	b := bytes.Buffer{}
+	//stores the data stream from the http server and stores it in b which is a buffer (array)
 	io.Copy(&b, resp.Body)
 	// get loud
 	if *rawVerbose {
 		fmt.Println(b.String())
 	}
 	w := Weather{}
-	//parses the xml data 
+	//parses the xml data and stores it in the weather struct 
 	err = xml.Unmarshal(b.Bytes(), &w)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("location:%s, %s\n", w.Location.Name, w.Location.Country)
 	if *verbose {
+		//prints the raw data(%v) that was compiled 
 		fmt.Printf("%v", w)
 	}
 	//searches for different precipitation and ranges of temperature 
 	for _, t := range w.Forecast.Time {
 		// searches for the word "snow" in weathermap.org
 		if strings.Contains(t.Precipitation.Type, "snow") {
-			fmt.Printf("%v - %v Snow on the way!\n", t.From, t.To)
+			fmt.Printf("%s - %s Snow on the way!\n", t.From, t.To)
 		}
 		// searches for the word "ice" in weathermap.org
 		if strings.Contains(t.Precipitation.Type, "ice") {
-			fmt.Printf("%v - %v Ice incoming\n", t.From, t.To)
+			fmt.Printf("%s - %s Ice incoming\n", t.From, t.To)
 		}
 		//converts t.Temp.Value which is a string into a integer (float64)
 		k, _ := strconv.ParseFloat(t.Temp.Value, 64)
@@ -73,11 +76,11 @@ func main() {
 		f := ((9 / 5) * (k - 273)) + 32 
 		//searches for temperature 32 degrees Fahrenheit and under
 		if f <= 32 {
-			fmt.Printf("%v - %v %d It'll be below freezing!\n", t.From, t.To, int(f))
+			fmt.Printf("%s - %s %d It'll be below freezing!\n", t.From, t.To, int(f))
 		}
 		//searches for temperatures above 32 degrees and below 40 degrees Fahrenheit
 		if f > 32 && f <= 40 {
-			fmt.Printf("%v - %v %d It'll be cold today!\n", t.From, t.To, int(f))
+			fmt.Printf("%s - %s %d It'll be cold today!\n", t.From, t.To, int(f))
 		}
 		//searches for temperatures above 40 degrees and below 70 degrees Fahrenheit
 		if f > 40 && f <= 70 {
